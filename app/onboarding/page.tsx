@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function OnboardingFlow() {
     const [step, setStep] = useState(0);
@@ -20,11 +21,18 @@ export default function OnboardingFlow() {
     };
 
     return (
-        <div className="w-full h-screen flex items-center justify-center p-4">
+        <div className="w-full h-screen flex items-center justify-center">
             {step === 0 && (
 
                 <div className="flex flex-col justify-center items-center w-full h-full text-center bg-[#7ACFDB]">
-                    <img src="/assets/images/o-buy-no-bg-sm.png" alt="O-Buy Logo" className="mx-auto mb-4 w-30 h-20" />
+                    <Image
+                        src="/assets/images/o-buy-no-bg-sm.png"
+                        alt="O-Buy Logo"
+                        width={120}
+                        height={80}
+                        className="mx-auto mb-4"
+                    />
+
                     <h4 className="text-3xl text-white">Everything You Need, One Tap Away.</h4>
                 </div>
             )}

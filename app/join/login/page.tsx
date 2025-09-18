@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Image from "next/image";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -41,8 +42,12 @@ export default function LoginPage() {
             }
 
             router.push("/home");
-        } catch (err: any) {
-            setError(err.message || "Something went wrong. Please try again.");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unexpected error occurred.");
+            }
         } finally {
             setLoading(false);
         }
@@ -59,7 +64,14 @@ export default function LoginPage() {
         >
             <div className="w-full  h-screen flex flex-col justify-center items-center gap-4 p-2">
                 <div className="w-full h-[450px] flex justify-center items-center">
-                    <img src="/assets/images/o-buy-no-bg-sm.png" alt="O-Buy Logo" className="mx-auto mb-4 w-30 h-20" />
+                    <Image
+                        src="/assets/images/o-buy-no-bg-sm.png"
+                        alt="O-Buy Logo"
+                        width={120}
+                        height={80}
+                        className="mx-auto mb-4"
+                    />
+
                 </div>
                 <form
                     onSubmit={handleSubmit}
