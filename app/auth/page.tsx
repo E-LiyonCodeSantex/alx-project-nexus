@@ -55,7 +55,7 @@ export default function AuthOptions() {
       style={{ backgroundImage: "url('/assets/images/onboarding-woman2.jpg')" }}
     >
       <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center gap-4">
-        <div className="w-full max-w-[400px] flex flex-col justify-center items-center p-4">
+        <div className="w-full max-w-[400px] h-full flex flex-col justify-around items-center p-4">
           <form onSubmit={handleSubmit} className="flex flex-col items-start mb-3">
             <h1 className="text-white text-3xl font-bold mb-4">Quick start</h1>
             <h3 className="text-white font-semibold">

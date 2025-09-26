@@ -1,14 +1,15 @@
 "use client";
 import { useSession } from "next-auth/react";
-import AddsCard from "../components/addCard";
-import SearchBar from "../components/searchBar";
-import Card from "../components/cards";
+import AddsCard from "@/app/components/addCard";
+import SearchBar from "@/app/components/searchBar";
+import Card from "@/app/components/cards";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "@/store/productSlice";
 import type { RootState, AppDispatch } from "@/store";
 
-export default function HomePage() {
+
+export default function CategoryPage() {
   const { data: session } = useSession();
   const dispatch = useDispatch<AppDispatch>();
   const { products, loading, error } = useSelector((state: RootState) => state.product);

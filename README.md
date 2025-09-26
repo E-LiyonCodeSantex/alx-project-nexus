@@ -45,7 +45,24 @@
         * Choose Web Application
         # NOTE: I wrap my layout children in a SessionProvider (this defineds that only authenticated users can acess the page) and to do this i have to tell Next.js that this component should run on the client side by adding " 'use client'; " to the first line of app/layout.tsx
         * 
+    # *Home page development*
 
+    * I created app/home/layout.tsx to display the  layout of the dashboard and other related pages.
+    * created the app/home/page.tsx for the dashboard page and I created the app/component/header.tsx the header across dashbooard and dashoard related pages, footer.tsx for the footer and card.tsx for the cards
+    * I used font-awesome by installing it using:
+        # npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/fontawesome-svg-core
+        # npm install @fortawesome/free-brands-svg-icons 
+
+    # *Connect to backend*
+    First i started by intalling axios an redux using: npm install axios @reduxjs/toolkit react-redux
+    then i;
+    * I creted lib/axios.ts where i'll create the Axios Instance
+        # Note: This will set up a reusable Axios client for all your API calls.
+    * I created store/index.ts where i configured the store provider
+    * I created store/productSlice.ts which will serve as the actual store
+    * Then I wrapped the loged in session layout with redux provider (<Provider store={store}>)
+    
+    
 
 
 

@@ -52,9 +52,9 @@ export default function OnboardingFlow() {
                     style={{ backgroundImage: "url('/assets/images/onboarding-woman2.jpg')" }}
                 >
                     <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center">
-                        <h2 className="text-white text-2xl mb-2 font-semibold">From Cart to Doorstep</h2>
-                        <h2 className="text-white text-2xl mb-2 font-semibold">Fast, Easy,</h2>
-                        <h1 className="text-white text-3xl mb-6 font-bold">O-Buy.</h1>
+                        <h1 className="text-white text-3xl text-[#7ACFDB] mb-6 font-bold">O-Buy.</h1>
+                        <h2 className="text-white text-xl mb-2 font-semibold">From Cart to Doorstep</h2>
+                        <h2 className="text-white text-xl mb-6 font-semibold">Fast, Easy,</h2>
                         <button
                             onClick={handleGetStarted}
                             className="bg-[#7ACFDB] text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-200 transition"
