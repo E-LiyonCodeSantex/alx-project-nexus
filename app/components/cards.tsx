@@ -25,9 +25,8 @@ export default function Card({ product }: CardProps) {
 
   // pick the URL for the current image—or fallback if none
   const rawImage = product.images[currentImageIndex]?.image;
-  const decoded = rawImage ? decodeURIComponent(rawImage) : "";
-  const imageUrl = decoded.includes("https:/res.cloudinary.com")
-    ? decoded.replace("https://e-commerce-backend-hvtu.onrender.com/", "")
+  const imageUrl = rawImage && rawImage.startsWith("http")
+    ? rawImage
     : "/fallback.png";
 
 

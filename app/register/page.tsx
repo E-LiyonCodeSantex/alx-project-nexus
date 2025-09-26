@@ -3,48 +3,54 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
+import axios from "axios";
 
-export default function LoginPage() {
+export default function AdminRegisterPage() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
+
     const [formData, setFormData] = useState({
+        username: " ",
         email: " ",
         password: " ",
-    })
+        confirm_password: "",
+    });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError("");
 
+        if (formData.password !== formData.confirm_password) {
+            setError("Passwords do not match.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            const res = await fetch("/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
+            await axios.post("https://e-commerce-backend-hvtu.onrender.com/api/users/register/", formData);
+            alert("Registration successful!");
+            router.push("/login");
+        } catch (err: any) {
+            if (axios.isAxiosError(err)) {
+                const backendMessage =
+                    err.response?.data?.message ||
+                    err.response?.data?.email?.[0] ||
+                    err.response?.data?.detail;
 
-            const contentType = res.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                throw new Error("Server is currently unavailable. Please try again later.");
-            }
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.message || "Login failed");
-            }
-
-            router.push("/home");
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-                setError(err.message);
+                if (
+                    backendMessage?.toLowerCase().includes("email") &&
+                    backendMessage?.toLowerCase().includes("exist")
+                ) {
+                    setError("User already registered. Please login instead.");
+                } else {
+                    setError(backendMessage || "Registration failed. Try again.");
+                }
             } else {
                 setError("An unexpected error occurred.");
             }
@@ -52,8 +58,6 @@ export default function LoginPage() {
             setLoading(false);
         }
     };
-
-
 
     return (
         <div className="flex justify-around items-center "
@@ -63,7 +67,7 @@ export default function LoginPage() {
             }}
         >
             <div className="w-full  h-screen flex flex-col justify-center items-center gap-4 p-2">
-                <div className="w-full h-[450px] flex justify-center items-center">
+                <div className="w-full h-[350px] flex justify-center items-center">
                     <Image
                         src="/assets/images/o-buy-no-bg-sm.png"
                         alt="O-Buy Logo"
@@ -75,11 +79,29 @@ export default function LoginPage() {
                 </div>
                 <form
                     onSubmit={handleSubmit}
-                    className="w-full max-w-[400px] h-full justfiy-center items-center bg-[#D9D9D9]/50 gap-4 rounded-tl-[20px] rounded-tr-[20px] p-4">
+                    className="w-full max-w-[400px] h-full justfiy-center items-center bg-[#D9D9D9] gap-4 rounded-3xl p-4">
                     <div className="w-full items-start mb-4">
-                        <h1 className="text-2xl font-semibold">Log In</h1>
-                        <h4>Enter email and password to login</h4>
+                        <h1 className="text-2xl font-semibold">Admin Registration</h1>
+                        <h4>Enter your details below to continue</h4>
                     </div>
+
+                    <div className="border-b-2 border-black/60 mb-4">
+                        <h4>Username</h4>
+                        <input
+                            type="text"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                            placeholder="Santex"
+                            className="appearance-none 
+                            [&::-webkit-inner-spin-button]:appearance-none 
+                            [&::-webkit-outer-spin-button]:appearance-none 
+                            bg-transparent text-black w-full max-w-[200px] 
+                            border-none focus:outline-none focus:ring-0"
+                        />
+                    </div>
+
                     <div className="border-b-2 border-black/60 mb-4">
                         <h4>Email</h4>
                         <input
@@ -88,7 +110,7 @@ export default function LoginPage() {
                             value={formData.email}
                             onChange={handleChange}
                             required
-                            placeholder="santex@example.com"
+                            placeholder="admin@example.com"
                             className="appearance-none 
                             [&::-webkit-inner-spin-button]:appearance-none 
                             [&::-webkit-outer-spin-button]:appearance-none 
@@ -104,7 +126,7 @@ export default function LoginPage() {
                             value={formData.password}
                             onChange={handleChange}
                             required
-                            placeholder="••••"
+                            placeholder="• • • • "
                             className="appearance-none 
                             [&::-webkit-inner-spin-button]:appearance-none 
                             [&::-webkit-outer-spin-button]:appearance-none 
@@ -119,6 +141,29 @@ export default function LoginPage() {
                             {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </button>
                     </div>
+                    <div className="border-b-2 border-black/60 mb-4 relative">
+                        <h4>Confirm Password</h4>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="confirm_password"
+                            onChange={handleChange}
+                            required
+                            placeholder="• • • • •"
+                            className="appearance-none 
+                            [&::-webkit-inner-spin-button]:appearance-none 
+                            [&::-webkit-outer-spin-button]:appearance-none 
+                            bg-transparent text-black w-full max-w-[200px] 
+                            border-none focus:outline-none focus:ring-0"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-2 top-7 text-black"
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
+
                     {error && (
                         <p className="text-red-600 text-sm text-center">{error}</p>
                     )}
@@ -131,19 +176,19 @@ export default function LoginPage() {
                         >{loading ? "Signing up..." : "Sign up"}
                         </button>
                     </div>
-                    <p className="text-sm text-black flex flex-wrap justify-center items-center gap-1 mt-3">
-                        <span>Don’t have anm account? </span>
+                    <p className="text-sm text-black flex flex-wrap justify-center items-center gap-1 mt-3 mb-3">
+                        <span>Already have an accout? </span>
                         <a
-                            href="/join"
+                            href="/login"
                             rel="noopener noreferrer"
                             aria-label="Read our Terms of Service"
                             className="text-blue-600 no-underline hover:text-blue-800"
                         >
-                            Sign Up
+                            Sign in
                         </a>
                     </p>
-
                 </form>
+
             </div>
         </div>
     );
