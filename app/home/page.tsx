@@ -23,7 +23,7 @@ export default function HomePage() {
       <AddsCard />
       <div className="flex flex-col justify-center items-start gap-2 w-full">
         <div className="w-full flex justify-between gap-4 items-center border-b-2 border-black/50 text-black px-4">
-          <p>Telephones</p>
+          <p>ALL products</p>
           <a
             href="/home/offers"
             className="no-underline text-[#0699CA]">See All</a>
@@ -43,7 +43,6 @@ export default function HomePage() {
 
         <div className="w-full flex justify-start items-center gap-6 p-2 overflow-x-scroll no-scrollbar">
           {Array.isArray(products) && products
-            .filter(product => product.category?.name === "telephones")
             .map((product, index) => (
               <Card key={index} product={product} />
             ))}
