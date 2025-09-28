@@ -51,7 +51,7 @@ export const authOptions = {
             console.error("❌ Axios error:", err.response?.data || err.message);
           } else {
             console.error("❌ Unexpected error:", err);
-          }
+          } 
           return null;
         }
       },

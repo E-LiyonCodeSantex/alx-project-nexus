@@ -62,7 +62,7 @@ export default function AdminPostPage() {
         payload.append("brand", formData.brand);
         payload.append("category", formData.category);
 
-        formData.images.forEach((file, index) => {
+        formData.images.forEach(( file ) => {
             payload.append(`images`, file);
         });
 
@@ -70,7 +70,7 @@ export default function AdminPostPage() {
             await axiosInstance.post("/products/", payload);
             alert("Product posted successfully!");
             router.push("/admin");
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Failed to post product:", error);
             alert("Something went wrong. Please try again.");
         } finally {

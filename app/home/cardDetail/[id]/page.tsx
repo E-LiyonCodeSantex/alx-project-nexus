@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import DetailRow from "@/app/components/detailRow";
-import IncrementAndDecrementButton from "@/app/components/IncrementAndDecrementButton";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartFlatbedSuitcase } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from "react";
@@ -28,15 +27,9 @@ export default function CardDetailPage() {
                     setSelectedImage(res.data.images[0].image);
                 }
 
-            } catch (error: any) {
+            } catch (error: unknown) {
                 console.error("Failed to fetch product:", error);
-                if (error.response?.status === 404) {
-                    setErrorMessage("Product not found.");
-                } else if (error.response?.status === 500) {
-                    setErrorMessage("Something went wrong on our end. Please try again later.");
-                } else {
                     setErrorMessage("Unable to load product. Check your connection and try again.");
-                }
             }
         }
 

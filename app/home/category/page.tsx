@@ -10,7 +10,6 @@ import type { RootState, AppDispatch } from "@/store";
 
 
 export default function CategoryPage() {
-  const { data: session } = useSession();
   const dispatch = useDispatch<AppDispatch>();
   const { products, loading, error } = useSelector((state: RootState) => state.product);
 

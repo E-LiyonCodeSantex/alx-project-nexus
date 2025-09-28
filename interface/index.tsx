@@ -37,3 +37,13 @@ export interface ProductCards {
   category_id: number;
   images: ProductImage[];  
 }
+
+
+
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  images: { id: number; image: string }[];
+}

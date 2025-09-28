@@ -9,7 +9,6 @@ import { fetchProducts } from "@/store/productSlice";
 import type { RootState, AppDispatch } from "@/store";
 
 export default function BrandPage() {
-    const { data: session } = useSession();
     const dispatch = useDispatch<AppDispatch>();
     const { products, loading, error } = useSelector((state: RootState) => state.product);
 
