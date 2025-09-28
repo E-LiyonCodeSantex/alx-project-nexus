@@ -4,14 +4,17 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
 import axios from "axios";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
+
     const [formData, setFormData] = useState({
-        username: "",
+        email: "",
         password: "",
     });
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -24,35 +27,44 @@ export default function LoginPage() {
         setLoading(true);
         setError("");
 
-        try {
-            const response = await axios.post("https://e-commerce-backend-hvtu.onrender.com/api/users/login/",
-                {
-                    email: formData.username.trim(),
-                    password: formData.password.trim(),
-                }
-            );
-            const token = response.data.access;
+        if (
+            !formData.email.trim() ||
+            !formData.password.trim()
+        ) {
+            setError("All fields are required.");
+            setLoading(false);
+            return;
+        }
 
-            localStorage.setItem("adminToken", token);
-            alert("Login successful!");
-            router.push("/home");
+        try {
+            const res = await signIn("credentials", {
+                redirect: false,
+                email: formData.email.trim(),
+                password: formData.password.trim(),
+            });
+
+            if (res?.error) {
+                setError("Invalid email or password.");
+                console.log("Full Axios response:", res);
+
+            } else {
+                alert("Login successful!");
+                router.push("/home");
+            }
+
+
         } catch (err: any) {
             if (axios.isAxiosError(err)) {
                 const backendMessage =
                     err.response?.data?.message ||
-                    err.response?.data?.detail ||
-                    err.response?.data?.non_field_errors?.[0];
+                    err.response?.data?.email?.[0] ||
+                    err.response?.data?.detail;
 
                 if (
-                    backendMessage?.toLowerCase().includes("no active account") ||
-                    backendMessage?.toLowerCase().includes("not found")
+                    !backendMessage?.toLowerCase().includes("email") &&
+                    !backendMessage?.toLowerCase().includes("exist")
                 ) {
-                    setError("User not found. Please register first.");
-                } else if (
-                    backendMessage?.toLowerCase().includes("invalid") ||
-                    backendMessage?.toLowerCase().includes("credentials")
-                ) {
-                    setError("Invalid email or password.");
+                    setError("User not found. Check details before sending");
                 } else {
                     setError(backendMessage || "Login failed. Try again.");
                 }
@@ -89,21 +101,21 @@ export default function LoginPage() {
                     className="w-full max-w-[400px] h-full justfiy-center items-center bg-[#D9D9D9]/50 gap-4 rounded-3xl p-4">
                     <div className="w-full items-start mb-4">
                         <h1 className="text-2xl font-semibold">Admin Login</h1>
-                        <h4>Enter username and password to login</h4>
+                        <h4>Enter email and password to login</h4>
                     </div>
                     <div className="border-b-2 border-black/60 mb-4">
-                        <h4>Username</h4>
+                        <h4>Email</h4>
                         <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
+                            type="email"
+                            name="email"
+                            value={formData.email}
                             onChange={handleChange}
                             required
-                            placeholder="santex"
+                            placeholder="example@email.com"
                             className="appearance-none 
                             [&::-webkit-inner-spin-button]:appearance-none 
                             [&::-webkit-outer-spin-button]:appearance-none 
-                            bg-transparent text-black w-full max-w-[200px] 
+                            bg-transparent text-black w-full
                             border-none focus:outline-none focus:ring-0"
                         />
                     </div>
@@ -116,10 +128,10 @@ export default function LoginPage() {
                             onChange={handleChange}
                             required
                             placeholder="••••"
-                            className="appearance-none 
+                            className="appearance-none
                             [&::-webkit-inner-spin-button]:appearance-none 
                             [&::-webkit-outer-spin-button]:appearance-none 
-                            bg-transparent text-black w-full max-w-[200px] 
+                            bg-transparent text-black w-full 
                             border-none focus:outline-none focus:ring-0"
                         />
                         <button
@@ -139,7 +151,7 @@ export default function LoginPage() {
                             type="submit"
                             disabled={loading}
                             className="bg-[#0699CA] w-full max-w-[200px] justify-center items-center text-white px-6 py-2 mb-3 rounded-xl disabled:opacity-50 block mx-auto hover:bg-blue-600 transition"
-                        >{loading ? "Signing up..." : "Sign up"}
+                        >{loading ? "Loging in..." : "Login In"}
                         </button>
                     </div>
                     <p className="text-sm text-black flex flex-wrap justify-center items-center gap-1 mt-3">

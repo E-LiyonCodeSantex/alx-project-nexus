@@ -44,7 +44,7 @@ export default function HomePage() {
 
         <div className="w-full flex justify-start items-center gap-6 p-2 overflow-x-scroll no-scrollbar">
           {Array.isArray(products) && products
-            .filter(product => product.category?.name === "Phones")
+            .filter(product => product.category?.name === "telephones")
             .map((product, index) => (
               <Card key={index} product={product} />
             ))}

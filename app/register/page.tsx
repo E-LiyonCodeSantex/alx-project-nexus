@@ -4,15 +4,17 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
 import axios from "axios";
+import { signIn } from "next-auth/react";
+import axiosInstance from "@/lib/axios";
 
 export default function AdminRegisterPage() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
 
     const [formData, setFormData] = useState({
-        username: " ",
-        email: " ",
-        password: " ",
+        username: "",
+        email: "",
+        password: "",
         confirm_password: "",
     });
     const [loading, setLoading] = useState(false);
@@ -31,11 +33,35 @@ export default function AdminRegisterPage() {
             setLoading(false);
             return;
         }
-
+        if (
+            !formData.username.trim() ||
+            !formData.email.trim() ||
+            !formData.password.trim()
+        ) {
+            setError("All fields are required.");
+            setLoading(false);
+            return;
+        }
         try {
-            await axios.post("https://e-commerce-backend-hvtu.onrender.com/api/users/register/", formData);
+            await axiosInstance.post("/users/register/", {
+                username: formData.username.trim(),
+                email: formData.email.trim(),
+                password: formData.password.trim(),
+            });
             alert("Registration successful!");
-            router.push("/login");
+
+            const res = await signIn("credentials", {
+                redirect: false,
+                email: formData.email.trim(),
+                password: formData.password.trim(),
+            });
+
+            if (res?.error) {
+                setError("Login failed after registration. Please try logging in manually.");
+            } else {
+                router.push("/home");
+            }
+
         } catch (err: any) {
             if (axios.isAxiosError(err)) {
                 const backendMessage =

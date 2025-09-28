@@ -91,7 +91,7 @@ export default function AuthOptions() {
           </form>
 
           <button
-            onClick={() => router.push("/join")}
+            onClick={() => router.push("/register")}
             className="bg-[#0699CA] w-full max-w-[200px] text-white px-6 py-2 mb-3 rounded-xl disabled:opacity-50 hover:bg-blue-600 transition"
           >Sign up
           </button>
@@ -100,12 +100,15 @@ export default function AuthOptions() {
 
           <div className="w-full max-w-[250px] flex flex-col justify-center items-center gap-4 mt-4 ">
             <button onClick={() => signIn("google")}
+            disabled
               className="flex flex-row justify-center items-center bg-[#0F9D58] w-full max-w-[220px] text-white gap-1 px-2 py-2 rounded-xl mb-3 hover:bg-green-800 transition">
               <FaGoogle size={24} className="text-white" />
               Sign in with Google
             </button>
 
-            <button className="flex flex-row justify-center items-center bg-[#1877F2] w-full max-w-[220px] text-white gap-1 px-2 py-2 rounded-xl mb-3 hover:bg-blue-800 transition">
+            <button
+            disabled 
+            className="flex flex-row justify-center items-center bg-[#1877F2] w-full max-w-[220px] text-white gap-1 px-2 py-2 rounded-xl mb-3 hover:bg-blue-800 transition">
               <FaFacebookF size={24} className="text-white" />
               Sign in with Facebook
             </button>

@@ -30,25 +30,23 @@ export default function IncrementAndDecrementButton({
   };
 
   return (
-    <div className="flex justify-start items-center gap-2 flex-wrap">
+    <div className="flex justify-start items-center gap-4 flex-wrap bg-[#DCDCDC]">
       <button
         onClick={decrement}
         disabled={count === 0}
-        className={`bg-[#0699CA] text-white flex justify-center items-center font-bold text-3xl w-[35px] h-[35px] rounded-xl hover:bg-blue-600 transition ${
-          count === 0 ? "opacity-50 cursor-not-allowed" : ""
-        }`}
+        className={` flex justify-center items-center border-r-2 border-black/40 hover:border-[#0699CA] ${count === 0 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
       >
-        -
+        <b className="px-2 font-bold text-3xl text-[#0699CA] hover:text-blue-600 transition">-</b>
       </button>
       <h2 className="font-bold">{count}</h2>
       <button
         onClick={increment}
         disabled={count === stock}
-        className={`bg-[#0699CA] text-white flex justify-center items-center font-bold text-3xl w-[35px] h-[35px] rounded-xl hover:bg-blue-600 transition ${
-          count === stock ? "opacity-50 cursor-not-allowed" : ""
-        }`}
+        className={` flex justify-center items-center border-l-2 border-black/40 hover:border-[#0699CA] ${count === stock ? "opacity-50 cursor-not-allowed" : ""
+          }`}
       >
-        +
+        <b className="px-2 font-bold text-2xl text-[#0699CA] hover:text-blue-600 transition">+</b>
       </button>
     </div>
   );

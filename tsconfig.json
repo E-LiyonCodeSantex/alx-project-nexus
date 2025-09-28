@@ -26,13 +26,18 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ],
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     "next-env.d.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "lib/next-auth.d.ts"
   ],
   "exclude": [
     "node_modules"

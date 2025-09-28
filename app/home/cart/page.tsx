@@ -1,8 +1,12 @@
+"use client";
 import CartCards from "@/app/components/cart";
 import Header from "@/app/components/header";
 import SearchBar from "@/app/components/searchBar";
+import { useCart } from "@/app/context/CartContext";
 
 export default function Cart() {
+    const { cart, clearCart } = useCart();
+
     return (
         <div>
             <Header />
@@ -10,10 +14,11 @@ export default function Cart() {
 
             <div className="flex flex-col justify-center items-center w-full gap-4 py-4">
                 <div className="w-full flex justify-between gap-4 items-center border-b-2 border-black/50 text-black px-4 bg-[#DCDCDC]">
-                    <p>Cart <span>(100)</span></p>
+                    <p>Cart <span>({cart.length})</span></p>
                     <button
+                        onClick={clearCart}
                         className="no-underline text-[#0699CA]"
-                        >Clear All</button>
+                    >Clear All</button>
                 </div>
                 <CartCards />
             </div>

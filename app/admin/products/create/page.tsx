@@ -38,9 +38,17 @@ export default function AdminPostPage() {
         }
     };
 
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+
+        if (!formData) {
+            setLoading(false);
+            return;
+        }
+
 
         const availability = Number(formData.stock) > 0;
 
@@ -55,16 +63,18 @@ export default function AdminPostPage() {
         payload.append("category", formData.category);
 
         formData.images.forEach((file, index) => {
-            payload.append(`images`, file); // backend should accept multiple files under 'images'
+            payload.append(`images`, file);
         });
 
         try {
             await axiosInstance.post("/products/", payload);
             alert("Product posted successfully!");
-            router.push("/admin/dashboard"); // or wherever you want to redirect
+            router.push("/admin");
         } catch (error: any) {
             console.error("Failed to post product:", error);
             alert("Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -81,8 +91,11 @@ export default function AdminPostPage() {
                 <input name="category" placeholder="Category Name" onChange={handleChange} required className="input" />
                 <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="input" />
 
-                <button type="submit" className="bg-[#0699CA] text-white py-2 px-4 rounded hover:bg-blue-600 transition">
-                    Post Product
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-[#0699CA] text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+                    {loading ? "Posting Product..." : "Post Product"}
                 </button>
             </form>
         </div>
