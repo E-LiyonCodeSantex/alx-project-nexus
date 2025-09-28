@@ -1,5 +1,4 @@
 "use client";
-import { useSession } from "next-auth/react";
 import AdminAdsCard from "@/app/components/admin/adminAddsCard";
 import SearchBar from "@/app/components/searchBar";
 import Card from "@/app/components/cards";

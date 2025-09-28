@@ -41,7 +41,7 @@ export interface ProductCards {
 
 
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   price: number;
   stock: number;
