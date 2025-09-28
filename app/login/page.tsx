@@ -53,7 +53,7 @@ export default function LoginPage() {
             }
 
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
                 const backendMessage =
                     err.response?.data?.message ||

@@ -62,7 +62,7 @@ export default function AdminRegisterPage() {
                 router.push("/home");
             }
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
                 const backendMessage =
                     err.response?.data?.message ||

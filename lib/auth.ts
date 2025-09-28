@@ -46,7 +46,7 @@ export const authOptions = {
             email: data.user.email,
             username: data.user.username,
           };
-        } catch (err: any) {
+        } catch (err: unknown) {
           if (axios.isAxiosError(err)) {
             console.error("❌ Axios error:", err.response?.data || err.message);
           } else {
@@ -58,21 +58,21 @@ export const authOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: any }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.username = user.username;
-      }
-      return token;
-    },
-    async session({ session, token }: { session: Session; token: JWT }) {
-      session.user.id = token.id;
-      session.user.email = token.email;
-      session.user.username = token.username;
-      return session;
-    },
+callbacks: {
+  async jwt({ token, user }: { token: JWT; user?: { id: number; email: string; username: string } }) {
+    if (user) {
+      token.id = user.id;
+      token.email = user.email;
+      token.username = user.username;
+    }
+    return token;
   },
-};
+  async session({ session, token }: { session: Session; token: JWT }) {
+    session.user.id = token.id;
+    session.user.email = token.email;
+    session.user.username = token.username;
+    return session;
+  },
+},
 
+};
