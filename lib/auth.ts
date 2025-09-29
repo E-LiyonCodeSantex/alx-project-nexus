@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import type { JWT } from "next-auth/jwt";
 import type { Session } from "next-auth";
 import axios from "axios";
+import type { User, Account, Profile } from "next-auth";
 
 export const authOptions = {
     providers: [
@@ -59,11 +60,23 @@ export const authOptions = {
     ],
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
-        async jwt({ token, user }: { token: JWT; user?: any }) {
-            if (user && 'id' in user && 'email' in user) {
-                token.id = user.id;
-                token.email = user.email;
-                if ('username' in user) {
+        async jwt({
+            token,
+            user,
+            account,
+            profile,
+            isNewUser,
+        }: {
+            token: JWT;
+            user?: User;
+            account?: Account | null;
+            profile?: Profile;
+            isNewUser?: boolean;
+        }) {
+            if (user && "id" in user && "email" in user) {
+                token.id = typeof user.id === "string" ? parseInt(user.id, 10) : user.id;
+                token.email = user.email ?? undefined;
+                if ("username" in user && typeof user.username === "string") {
                     token.username = user.username;
                 }
             }

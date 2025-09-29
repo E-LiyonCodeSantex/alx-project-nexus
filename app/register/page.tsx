@@ -64,21 +64,25 @@ export default function AdminRegisterPage() {
 
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
-                const backendMessage =
-                    err.response?.data?.message ||
-                    err.response?.data?.email?.[0] ||
-                    err.response?.data?.detail;
-
-                if (
-                    backendMessage?.toLowerCase().includes("email") &&
-                    backendMessage?.toLowerCase().includes("exist")
-                ) {
-                    setError("User already registered. Please login instead.");
-                } else {
-                    setError(backendMessage || "Registration failed. Try again.");
+                console.error("Registration error:", err.response?.data || err.message);
+                const data = err.response?.data;
+                let message = "registration failedd.";
+                if (typeof data === "string") {
+                    message = data;
+                } else if (data?.username && Array.isArray(data.username)) {
+                    message = data.username[0] === "custom user with this username already exists."
+                        ? "Username already exists. Please choose another."
+                        : data.username[0];
+                } else if (data?.email && Array.isArray(data.email)) {
+                    message = data.email[0];
+                } else if (data?.password && Array.isArray(data.password)) {
+                    message = data.password[0];
+                } else if (data?.detail) {
+                    message = data.detail;
                 }
+                setError(message);
             } else {
-                setError("An unexpected error occurred.");
+                setError("An unexpected error occurred. Please try again.");
             }
         } finally {
             setLoading(false);
