@@ -154,6 +154,12 @@ export default function LoginPage() {
                         >{loading ? "Loging in..." : "Login In"}
                         </button>
                     </div>
+                    <button
+                        onClick={() => router.push("/home")}
+                        className="font-bold text-black flex flex-wrap justify-center items-center gap-1 mt-3 w-full"
+                    >
+                        Continue to Home
+                    </button>
                     <p className="text-sm text-black flex flex-wrap justify-center items-center gap-1 mt-3">
                         <span>Don’t have anm account? </span>
                         <a
