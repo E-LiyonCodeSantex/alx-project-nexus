@@ -83,8 +83,7 @@ export default function CardDetailPage() {
                 <DetailRow label="Name" value={product.name} />
                 <DetailRow label="Brand" value={product.brand.name} />
                 <DetailRow label="Descripion" value={product.description} />
-                <DetailRow label="Price:" value={product.price} />
-                <DetailRow label="Initial Price:" value={product.initial_price} />
+                <DetailRow label="Price:" value={`₦${product.price}`} />
                 <DetailRow label="Category:" value={product.category.name} />
                 <DetailRow label="Stock:" value={product.stock} />
                 <DetailRow
@@ -97,6 +96,7 @@ export default function CardDetailPage() {
                         )
                     }
                 />
+                <DetailRow label="Total:" value={product.price * quantity} />
 
             </div>
             <div className="flex w-full justify-around items-center flex-wrap gap-2">
